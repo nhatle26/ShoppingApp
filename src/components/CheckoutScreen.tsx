@@ -84,7 +84,7 @@ const CheckoutScreen: React.FC<Props> = ({ currentUser, onBack, onOrderSuccess }
 
     Alert.alert(
       'Đặt hàng thành công! 🎉',
-      `Đơn hàng #${orderId} đã được tạo.\nTổng tiền: ${totalAmount.toLocaleString('vi-VN')} đ`,
+      `Đơn hàng #${orderId} đã được tạo thành công.\nTrạng thái: ⏳ Chờ Admin xác nhận\nTổng tiền: ${formatPrice(totalAmount)}`,
       [{ text: 'Xem đơn hàng', onPress: onOrderSuccess }]
     );
   };

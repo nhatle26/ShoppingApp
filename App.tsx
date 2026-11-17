@@ -30,11 +30,8 @@ export type TabType =
   | 'history'
   | 'profile';
 
-export type TabBarMode = 'standard' | 'rubric';
-
 const App = () => {
   const [currentTab, setCurrentTab] = useState<TabType>('userHome');
-  const [tabBarMode, setTabBarMode] = useState<TabBarMode>('standard');
   const [userSubView, setUserSubView] = useState<UserSubView>('home');
   const [currentUser, setCurrentUser] = useState<User | null>(null);
 
@@ -100,29 +97,7 @@ const App = () => {
     },
   ];
 
-  const rubricTabs: { key: TabType; icon: string; label: string; active: boolean }[] = [
-    {
-      key: 'userHome',
-      icon: '🛍️',
-      label: isAdmin ? 'Home user' : 'Home',
-      active: currentTab === 'userHome' && (userSubView === 'home' || userSubView === 'detail'),
-    },
-    ...(isAdmin
-      ? [{ key: 'adminHome' as TabType, icon: '🛡️', label: 'Home admin', active: currentTab === 'adminHome' }]
-      : []),
-    { key: 'signup', icon: '📝', label: 'Signup', active: currentTab === 'signup' },
-    { key: 'login', icon: '🔑', label: 'Login', active: currentTab === 'login' },
-  ];
-
-  const activeTabs = tabBarMode === 'standard' ? standardTabs : rubricTabs;
-
   const handleTabPress = (tabKey: TabType) => {
-    if (tabBarMode === 'rubric') {
-      setCurrentTab(tabKey);
-      if (tabKey === 'userHome') setUserSubView('home');
-      return;
-    }
-
     if (tabKey === 'userHome') {
       setCurrentTab('userHome');
       setUserSubView('home');
@@ -206,30 +181,8 @@ const App = () => {
         )}
       </View>
 
-      <View style={styles.modeBar}>
-        <Text style={styles.modeHint}>
-          {tabBarMode === 'standard' ? '📱 Thanh taskbar: Chuẩn App TMĐT' : '📋 Thanh taskbar: Chuẩn Phiếu Chấm'}
-        </Text>
-        <TouchableOpacity
-          style={styles.switchModeBtn}
-          onPress={() => {
-            const next = tabBarMode === 'standard' ? 'rubric' : 'standard';
-            setTabBarMode(next);
-            if (next === 'rubric' && (currentTab === 'cart' || currentTab === 'history' || currentTab === 'profile')) {
-              setCurrentTab('userHome');
-              setUserSubView('home');
-            }
-          }}
-          activeOpacity={0.8}
-        >
-          <Text style={styles.switchModeText}>
-            {tabBarMode === 'standard' ? 'Đổi sang Phiếu chấm ➔' : 'Đổi sang Chuẩn App ➔'}
-          </Text>
-        </TouchableOpacity>
-      </View>
-
       <View style={styles.bottomTabBar}>
-        {activeTabs.map((tab) => (
+        {standardTabs.map((tab) => (
           <TouchableOpacity
             key={tab.key}
             style={[styles.tabButton, tab.active && styles.tabButtonActive]}
@@ -252,26 +205,6 @@ export default App;
 const styles = StyleSheet.create({
   rootContainer: { flex: 1, backgroundColor: '#0F172A' },
   contentArea: { flex: 1, backgroundColor: '#F8FAFC' },
-  modeBar: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    backgroundColor: '#0F172A',
-    paddingHorizontal: 12,
-    paddingVertical: 4,
-    borderTopWidth: 1,
-    borderTopColor: '#1E293B',
-  },
-  modeHint: { fontSize: 10, color: '#94A3B8', fontWeight: '600' },
-  switchModeBtn: {
-    backgroundColor: '#1E293B',
-    paddingHorizontal: 8,
-    paddingVertical: 2,
-    borderRadius: 6,
-    borderWidth: 1,
-    borderColor: '#334155',
-  },
-  switchModeText: { fontSize: 10, color: '#38BDF8', fontWeight: '700' },
   bottomTabBar: {
     flexDirection: 'row',
     height: Platform.OS === 'ios' ? 60 : 54,

@@ -189,6 +189,10 @@ export const initDatabase = async (onSuccess?: () => void) => {
       WHERE NOT EXISTS (SELECT 1 FROM users WHERE username = 'user');
     `);
 
+    try {
+      database.execute("UPDATE orders SET status = 'Chờ xác nhận' WHERE status = 'Đã đặt hàng';");
+    } catch {}
+
     if (onSuccess) onSuccess();
   } catch (error) {
     console.error('Lỗi khởi tạo DB:', error);
@@ -391,7 +395,7 @@ export const createOrder = async (
         totalAmount,
         paymentMethod,
         new Date().toLocaleString('vi-VN'),
-        'Đã đặt hàng',
+        'Chờ xác nhận',
       ]
     );
 
