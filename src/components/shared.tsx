@@ -4,15 +4,86 @@ import { launchImageLibrary } from 'react-native-image-picker';
 import { OrderItem } from './database';
 import { ui } from './uiStyles';
 
-export const DEFAULT_IMG = 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=500';
+export const DEFAULT_IMG =
+  'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=500';
 
-export const getImgUri = (uri?: string) =>
-  uri && (uri.startsWith('http') || uri.startsWith('file')) ? uri : DEFAULT_IMG;
+export const CATEGORY_DEFAULT_IMAGES = {
+  shoes: 'https://images.unsplash.com/photo-1549298916-b41d501d3772?w=500',
+  clothes: 'https://images.unsplash.com/photo-1596755094514-f87e34085b2c?w=500',
+  bags: 'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=500',
+  watches: 'https://images.unsplash.com/photo-1524592094714-0f0654e20314?w=500',
+  default: DEFAULT_IMG,
+};
 
-export const formatPrice = (price: number) => `${price.toLocaleString('vi-VN')} đ`;
+export const getDefaultImg = (hint?: string): string => {
+  const h = (hint || '').toLowerCase();
+  if (
+    h.includes('giày') ||
+    h.includes('giay') ||
+    h.includes('sneaker') ||
+    h.includes('dép') ||
+    h.includes('dep') ||
+    h.includes('running') ||
+    h.includes('shoes') ||
+    h.includes('boot')
+  ) {
+    return CATEGORY_DEFAULT_IMAGES.shoes;
+  }
+  if (
+    h.includes('áo') ||
+    h.includes('ao') ||
+    h.includes('quần') ||
+    h.includes('quan') ||
+    h.includes('sơ mi') ||
+    h.includes('polo') ||
+    h.includes('thời trang') ||
+    h.includes('shirt') ||
+    h.includes('jean') ||
+    h.includes('khoác') ||
+    h.includes('vest')
+  ) {
+    return CATEGORY_DEFAULT_IMAGES.clothes;
+  }
+  if (
+    h.includes('balo') ||
+    h.includes('túi') ||
+    h.includes('tui') ||
+    h.includes('ví') ||
+    h.includes('cặp') ||
+    h.includes('bag')
+  ) {
+    return CATEGORY_DEFAULT_IMAGES.bags;
+  }
+  if (h.includes('đồng hồ') || h.includes('dong ho') || h.includes('watch')) {
+    return CATEGORY_DEFAULT_IMAGES.watches;
+  }
+  return CATEGORY_DEFAULT_IMAGES.default;
+};
+
+export const getImgUri = (uri?: string, hint?: string): string => {
+  const trimmed = uri ? uri.trim() : '';
+  const isValid =
+    trimmed.startsWith('http://') ||
+    trimmed.startsWith('https://') ||
+    trimmed.startsWith('file://') ||
+    trimmed.startsWith('content://') ||
+    trimmed.startsWith('data:image/');
+
+  if (isValid && trimmed.includes('photo-1523275335684-37898b6baf30')) {
+    const fallback = getDefaultImg(hint);
+    if (fallback !== DEFAULT_IMG) {
+      return fallback;
+    }
+  }
+
+  return isValid ? trimmed : getDefaultImg(hint);
+};
+
+export const formatPrice = (price: number) =>
+  `${price.toLocaleString('vi-VN')} đ`;
 
 export const pickImageUri = (onPicked: (uri: string) => void) => {
-  launchImageLibrary({ mediaType: 'photo' }, (res) => {
+  launchImageLibrary({ mediaType: 'photo' }, res => {
     if (res.assets?.[0]?.uri) onPicked(res.assets[0].uri);
   });
 };
@@ -78,7 +149,10 @@ export const EmptyState: React.FC<{
     <Text style={ui.emptyTitle}>{title}</Text>
     {subtitle && <Text style={ui.emptySub}>{subtitle}</Text>}
     {actionLabel && onAction && (
-      <TouchableOpacity style={[ui.btnPrimary, ui.actionBtnPad]} onPress={onAction}>
+      <TouchableOpacity
+        style={[ui.btnPrimary, ui.actionBtnPad]}
+        onPress={onAction}
+      >
         <Text style={ui.btnPrimaryText}>{actionLabel}</Text>
       </TouchableOpacity>
     )}
@@ -89,7 +163,10 @@ export const OrderItemList: React.FC<{ items?: OrderItem[] }> = ({ items }) => (
   <>
     {items?.map((prod, idx) => (
       <View key={idx} style={ui.orderProdRow}>
-        <Image source={{ uri: getImgUri(prod.productImg) }} style={ui.orderProdImg} />
+        <Image
+          source={{ uri: getImgUri(prod.productImg, prod.productName) }}
+          style={ui.orderProdImg}
+        />
         <View style={ui.orderProdMeta}>
           <Text style={ui.orderProdName} numberOfLines={1}>
             {prod.productName}
@@ -98,7 +175,9 @@ export const OrderItemList: React.FC<{ items?: OrderItem[] }> = ({ items }) => (
             {prod.quantity} × {formatPrice(prod.productPrice)}
           </Text>
         </View>
-        <Text style={ui.orderProdTotal}>{formatPrice(prod.quantity * prod.productPrice)}</Text>
+        <Text style={ui.orderProdTotal}>
+          {formatPrice(prod.quantity * prod.productPrice)}
+        </Text>
       </View>
     ))}
   </>

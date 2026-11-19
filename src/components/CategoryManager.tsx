@@ -9,7 +9,7 @@ import {
   Category,
 } from './database';
 import { ui } from './uiStyles';
-import { NavBar, DEFAULT_IMG, pickImageUri } from './shared';
+import { NavBar, getDefaultImg, pickImageUri } from './shared';
 
 interface Props {
   onBack?: () => void;
@@ -100,7 +100,7 @@ const CategoryManager: React.FC<Props> = ({ onBack, onRefreshProducts }) => {
     const ok = await addProduct({
       name: prodName.trim(),
       price: priceNum,
-      img: prodImg || DEFAULT_IMG,
+      img: prodImg.trim() || getDefaultImg(`${prodName} ${targetCategory.name}`),
       categoryId: targetCategory.id,
     });
 

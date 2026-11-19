@@ -21,7 +21,11 @@ interface Props {
   onUserUpdated: (user: User) => void;
 }
 
-const ProfileScreen: React.FC<Props> = ({ currentUser, onBack, onUserUpdated }) => {
+const ProfileScreen: React.FC<Props> = ({
+  currentUser,
+  onBack,
+  onUserUpdated,
+}) => {
   const [fullname, setFullname] = useState(currentUser?.fullname || '');
   const [phone, setPhone] = useState(currentUser?.phone || '');
   const [address, setAddress] = useState(currentUser?.address || '');
@@ -29,7 +33,12 @@ const ProfileScreen: React.FC<Props> = ({ currentUser, onBack, onUserUpdated }) 
 
   const handleSave = async () => {
     if (!currentUser) return;
-    if (!fullname.trim() && !phone.trim() && !address.trim() && !password.trim()) {
+    if (
+      !fullname.trim() &&
+      !phone.trim() &&
+      !address.trim() &&
+      !password.trim()
+    ) {
       Alert.alert('Thông báo', 'Không có thông tin nào thay đổi!');
       return;
     }
@@ -39,7 +48,7 @@ const ProfileScreen: React.FC<Props> = ({ currentUser, onBack, onUserUpdated }) 
       fullname.trim(),
       phone.trim(),
       address.trim(),
-      password.trim() || undefined
+      password.trim() || undefined,
     );
 
     if (!ok) {
@@ -61,7 +70,11 @@ const ProfileScreen: React.FC<Props> = ({ currentUser, onBack, onUserUpdated }) 
       behavior={Platform.OS === 'ios' ? 'padding' : undefined}
       style={ui.screen}
     >
-      <NavBar title="👤 THÔNG TIN CÁ NHÂN" onBack={onBack} backText="◀ Mua sắm" />
+      <NavBar
+        title="👤 THÔNG TIN CÁ NHÂN"
+        onBack={onBack}
+        backText="◀ Mua sắm"
+      />
 
       <ScrollView contentContainerStyle={ui.scrollPad}>
         <View style={[ui.card, styles.avatarCard]}>
@@ -70,15 +83,21 @@ const ProfileScreen: React.FC<Props> = ({ currentUser, onBack, onUserUpdated }) 
               {currentUser?.username?.charAt(0).toUpperCase() || 'U'}
             </Text>
           </View>
-          <Text style={styles.userName}>{currentUser?.fullname || currentUser?.username}</Text>
+          <Text style={styles.userName}>
+            {currentUser?.fullname || currentUser?.username}
+          </Text>
           <View
             style={[
               styles.roleBadge,
-              currentUser?.role === 'admin' ? styles.adminBadge : styles.userBadge,
+              currentUser?.role === 'admin'
+                ? styles.adminBadge
+                : styles.userBadge,
             ]}
           >
             <Text style={styles.roleText}>
-              {currentUser?.role === 'admin' ? '🛡️ Quản trị viên (Admin)' : '👤 Khách hàng (User)'}
+              {currentUser?.role === 'admin'
+                ? '🛡️ Quản trị viên (Admin)'
+                : '👤 Khách hàng (User)'}
             </Text>
           </View>
         </View>
@@ -129,7 +148,11 @@ const ProfileScreen: React.FC<Props> = ({ currentUser, onBack, onUserUpdated }) 
             onChangeText={setPassword}
           />
 
-          <TouchableOpacity style={ui.btnPrimary} onPress={handleSave} activeOpacity={0.85}>
+          <TouchableOpacity
+            style={ui.btnPrimary}
+            onPress={handleSave}
+            activeOpacity={0.85}
+          >
             <Text style={ui.btnPrimaryText}>LƯU THÔNG TIN THAY ĐỔI</Text>
           </TouchableOpacity>
         </View>
@@ -142,14 +165,32 @@ export default ProfileScreen;
 
 const styles = StyleSheet.create({
   avatarCard: { alignItems: 'center', padding: 20 },
-  avatarCircle: { width: 64, height: 64, borderRadius: 32, backgroundColor: '#0284C7', justifyContent: 'center', alignItems: 'center', marginBottom: 10 },
+  avatarCircle: {
+    width: 64,
+    height: 64,
+    borderRadius: 32,
+    backgroundColor: '#0284C7',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 10,
+  },
   avatarLetter: { color: '#FFFFFF', fontSize: 28, fontWeight: 'bold' },
-  userName: { fontSize: 18, fontWeight: 'bold', color: '#0F172A', marginBottom: 6 },
+  userName: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#0F172A',
+    marginBottom: 6,
+  },
   roleBadge: { paddingHorizontal: 12, paddingVertical: 4, borderRadius: 12 },
   adminBadge: { backgroundColor: '#FEE2E2' },
   userBadge: { backgroundColor: '#E0F2FE' },
   roleText: { fontSize: 12, fontWeight: 'bold', color: '#0F172A' },
-  formTitle: { fontSize: 15, fontWeight: 'bold', color: '#0F172A', marginBottom: 4 },
+  formTitle: {
+    fontSize: 15,
+    fontWeight: 'bold',
+    color: '#0F172A',
+    marginBottom: 4,
+  },
   disabledInput: { backgroundColor: '#F1F5F9', color: '#64748B' },
   hint: { fontSize: 11, color: '#94A3B8', marginTop: 2 },
 });

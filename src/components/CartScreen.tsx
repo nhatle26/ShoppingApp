@@ -52,7 +52,7 @@ const CartScreen: React.FC<Props> = ({ currentUser, onBack, onCheckout, onCartUp
 
   const renderCartItem = ({ item }: { item: CartItem }) => (
     <View style={[ui.card, ui.row]}>
-      <Image source={{ uri: getImgUri(item.img) }} style={styles.img} />
+      <Image source={{ uri: getImgUri(item.img, item.name) }} style={styles.img} />
       <View style={styles.info}>
         <Text style={styles.name} numberOfLines={2}>
           {item.name}

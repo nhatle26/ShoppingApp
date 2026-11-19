@@ -193,6 +193,35 @@ export const initDatabase = async (onSuccess?: () => void) => {
       database.execute("UPDATE orders SET status = 'Chờ xác nhận' WHERE status = 'Đã đặt hàng';");
     } catch {}
 
+    try {
+      database.execute(`
+        UPDATE products 
+        SET img = 'https://images.unsplash.com/photo-1549298916-b41d501d3772?w=500' 
+        WHERE (img LIKE '%photo-1523275335684-37898b6baf30%' OR img = '' OR img IS NULL) 
+          AND (LOWER(name) LIKE '%giày%' OR LOWER(name) LIKE '%sneaker%' OR LOWER(name) LIKE '%dép%');
+      `);
+      database.execute(`
+        UPDATE products 
+        SET img = 'https://images.unsplash.com/photo-1596755094514-f87e34085b2c?w=500' 
+        WHERE (img LIKE '%photo-1523275335684-37898b6baf30%' OR img = '' OR img IS NULL) 
+          AND (LOWER(name) LIKE '%áo%' OR LOWER(name) LIKE '%quần%' OR LOWER(name) LIKE '%sơ mi%' OR LOWER(name) LIKE '%polo%');
+      `);
+      database.execute(`
+        UPDATE products 
+        SET img = 'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=500' 
+        WHERE (img LIKE '%photo-1523275335684-37898b6baf30%' OR img = '' OR img IS NULL) 
+          AND (LOWER(name) LIKE '%balo%' OR LOWER(name) LIKE '%túi%' OR LOWER(name) LIKE '%cặp%');
+      `);
+      database.execute(`
+        UPDATE products 
+        SET img = 'https://images.unsplash.com/photo-1524592094714-0f0654e20314?w=500' 
+        WHERE (img LIKE '%photo-1523275335684-37898b6baf30%' OR img = '' OR img IS NULL) 
+          AND (LOWER(name) LIKE '%đồng hồ%' OR LOWER(name) LIKE '%dong ho%');
+      `);
+    } catch (e) {
+      console.warn('DB update images migration error:', e);
+    }
+
     if (onSuccess) onSuccess();
   } catch (error) {
     console.error('Lỗi khởi tạo DB:', error);

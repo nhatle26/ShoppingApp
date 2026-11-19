@@ -161,7 +161,7 @@ const CheckoutScreen: React.FC<Props> = ({ currentUser, onBack, onOrderSuccess }
 
           {cartItems.map((item) => (
             <View key={item.id} style={[ui.row, styles.sumItem]}>
-              <Image source={{ uri: getImgUri(item.img) }} style={styles.sumImg} />
+              <Image source={{ uri: getImgUri(item.img, item.name) }} style={styles.sumImg} />
               <View style={styles.sumInfo}>
                 <Text style={styles.sumName} numberOfLines={1}>
                   {item.name}
