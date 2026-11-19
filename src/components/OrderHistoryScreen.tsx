@@ -57,33 +57,38 @@ const OrderHistoryScreen: React.FC<Props> = ({ currentUser, onBack }) => {
           </View>
         </View>
 
-      <View style={styles.shippingBox}>
-        <Text style={styles.shippingText}>
-          👤 <Text style={styles.bold}>{item.customerName}</Text> | 📞 {item.phone}
-        </Text>
-        <Text style={styles.shippingText}>📍 {item.address}</Text>
-        <Text style={styles.shippingText}>💳 {item.paymentMethod}</Text>
-      </View>
+        <View style={styles.shippingBox}>
+          <Text style={styles.shippingText}>
+            👤 <Text style={styles.bold}>{item.customerName}</Text> | 📞{' '}
+            {item.phone}
+          </Text>
+          <Text style={styles.shippingText}>📍 {item.address}</Text>
+          <Text style={styles.shippingText}>💳 {item.paymentMethod}</Text>
+        </View>
 
-      <View style={styles.itemsList}>
-        <OrderItemList items={item.items} />
-      </View>
+        <View style={styles.itemsList}>
+          <OrderItemList items={item.items} />
+        </View>
 
-      <View style={[ui.rowBetween, styles.orderFooter]}>
-        <Text style={styles.totalLabel}>Tổng đơn hàng:</Text>
-        <Text style={styles.totalVal}>{formatPrice(item.totalAmount)}</Text>
+        <View style={[ui.rowBetween, styles.orderFooter]}>
+          <Text style={styles.totalLabel}>Tổng đơn hàng:</Text>
+          <Text style={styles.totalVal}>{formatPrice(item.totalAmount)}</Text>
+        </View>
       </View>
-    </View>
     );
   };
 
   return (
     <View style={ui.screen}>
-      <NavBar title="📦 LỊCH SỬ MUA HÀNG" onBack={onBack} backText="◀ Mua sắm" />
+      <NavBar
+        title="📦 LỊCH SỬ MUA HÀNG"
+        onBack={onBack}
+        backText="◀ Mua sắm"
+      />
 
       <FlatList
         data={orders}
-        keyExtractor={(item) => item.id.toString()}
+        keyExtractor={item => item.id.toString()}
         renderItem={renderOrderItem}
         contentContainerStyle={ui.listPad}
         ListEmptyComponent={
@@ -103,12 +108,27 @@ const OrderHistoryScreen: React.FC<Props> = ({ currentUser, onBack }) => {
 export default OrderHistoryScreen;
 
 const styles = StyleSheet.create({
-  orderHeader: { borderBottomWidth: 1, borderBottomColor: '#F1F5F9', paddingBottom: 8, marginBottom: 8 },
+  orderHeader: {
+    borderBottomWidth: 1,
+    borderBottomColor: '#F1F5F9',
+    paddingBottom: 8,
+    marginBottom: 8,
+  },
   orderId: { fontSize: 15, fontWeight: 'bold', color: '#0F172A' },
   orderDate: { fontSize: 12, color: '#64748B', marginTop: 2 },
-  statusBadge: { paddingHorizontal: 8, paddingVertical: 4, borderRadius: 6, borderWidth: 1 },
+  statusBadge: {
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 6,
+    borderWidth: 1,
+  },
   statusText: { color: '#166534', fontSize: 12, fontWeight: 'bold' },
-  shippingBox: { backgroundColor: '#F8FAFC', padding: 10, borderRadius: 8, marginBottom: 8 },
+  shippingBox: {
+    backgroundColor: '#F8FAFC',
+    padding: 10,
+    borderRadius: 8,
+    marginBottom: 8,
+  },
   shippingText: { fontSize: 12, color: '#475569', marginBottom: 2 },
   bold: { fontWeight: 'bold', color: '#0F172A' },
   itemsList: { marginBottom: 8 },

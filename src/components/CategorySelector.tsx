@@ -1,5 +1,11 @@
 import React from 'react';
-import { StyleSheet, Text, View, ScrollView, TouchableOpacity } from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  ScrollView,
+  TouchableOpacity,
+} from 'react-native';
 import { Category } from './database';
 
 interface CategorySelectorProps {
@@ -26,7 +32,11 @@ const CategorySelector: React.FC<CategorySelectorProps> = ({
 }) => {
   const options = [
     { id: null as number | null, name: 'Tất cả', icon: '🌐' },
-    ...categories.map((cat) => ({ id: cat.id, name: cat.name, icon: getCategoryIcon(cat.name) })),
+    ...categories.map(cat => ({
+      id: cat.id,
+      name: cat.name,
+      icon: getCategoryIcon(cat.name),
+    })),
   ];
 
   return (
@@ -37,7 +47,7 @@ const CategorySelector: React.FC<CategorySelectorProps> = ({
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={styles.scrollContent}
       >
-        {options.map((opt) => {
+        {options.map(opt => {
           const active = selectedId === opt.id;
           return (
             <TouchableOpacity
@@ -47,7 +57,9 @@ const CategorySelector: React.FC<CategorySelectorProps> = ({
               activeOpacity={0.7}
             >
               <Text style={styles.icon}>{opt.icon}</Text>
-              <Text style={[styles.pillText, active && styles.pillTextActive]}>{opt.name}</Text>
+              <Text style={[styles.pillText, active && styles.pillTextActive]}>
+                {opt.name}
+              </Text>
             </TouchableOpacity>
           );
         })}
@@ -59,11 +71,42 @@ const CategorySelector: React.FC<CategorySelectorProps> = ({
 export default CategorySelector;
 
 const styles = StyleSheet.create({
-  container: { backgroundColor: '#FFFFFF', paddingVertical: 10, borderBottomWidth: 1, borderBottomColor: '#E2E8F0' },
-  sectionTitle: { fontSize: 13, fontWeight: '700', color: '#475569', marginHorizontal: 16, marginBottom: 8, textTransform: 'uppercase', letterSpacing: 0.5 },
-  scrollContent: { paddingHorizontal: 12, flexDirection: 'row', alignItems: 'center' },
-  pill: { flexDirection: 'row', alignItems: 'center', paddingHorizontal: 14, paddingVertical: 8, borderRadius: 20, backgroundColor: '#F1F5F9', marginHorizontal: 4, borderWidth: 1, borderColor: '#CBD5E1' },
-  pillActive: { backgroundColor: '#2563EB', borderColor: '#1D4ED8', elevation: 2 },
+  container: {
+    backgroundColor: '#FFFFFF',
+    paddingVertical: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: '#E2E8F0',
+  },
+  sectionTitle: {
+    fontSize: 13,
+    fontWeight: '700',
+    color: '#475569',
+    marginHorizontal: 16,
+    marginBottom: 8,
+    textTransform: 'uppercase',
+    letterSpacing: 0.5,
+  },
+  scrollContent: {
+    paddingHorizontal: 12,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  pill: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 14,
+    paddingVertical: 8,
+    borderRadius: 20,
+    backgroundColor: '#F1F5F9',
+    marginHorizontal: 4,
+    borderWidth: 1,
+    borderColor: '#CBD5E1',
+  },
+  pillActive: {
+    backgroundColor: '#2563EB',
+    borderColor: '#1D4ED8',
+    elevation: 2,
+  },
   icon: { fontSize: 15, marginRight: 6 },
   pillText: { fontSize: 13, fontWeight: '600', color: '#334155' },
   pillTextActive: { color: '#FFFFFF', fontWeight: '700' },

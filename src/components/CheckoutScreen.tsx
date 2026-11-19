@@ -34,10 +34,14 @@ const PAYMENT_METHODS = [
   },
 ];
 
-const CheckoutScreen: React.FC<Props> = ({ currentUser, onBack, onOrderSuccess }) => {
+const CheckoutScreen: React.FC<Props> = ({
+  currentUser,
+  onBack,
+  onOrderSuccess,
+}) => {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [customerName, setCustomerName] = useState(
-    currentUser?.fullname || currentUser?.username || ''
+    currentUser?.fullname || currentUser?.username || '',
   );
   const [phone, setPhone] = useState(currentUser?.phone || '');
   const [address, setAddress] = useState(currentUser?.address || '');
@@ -53,11 +57,17 @@ const CheckoutScreen: React.FC<Props> = ({ currentUser, onBack, onOrderSuccess }
     loadCart();
   }, [loadCart]);
 
-  const totalAmount = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  const totalAmount = cartItems.reduce(
+    (sum, item) => sum + item.price * item.quantity,
+    0,
+  );
 
   const handlePlaceOrder = async () => {
     if (!customerName.trim() || !phone.trim() || !address.trim()) {
-      Alert.alert('Lỗi', 'Vui lòng điền đầy đủ họ tên, số điện thoại và địa chỉ nhận hàng!');
+      Alert.alert(
+        'Lỗi',
+        'Vui lòng điền đầy đủ họ tên, số điện thoại và địa chỉ nhận hàng!',
+      );
       return;
     }
     if (cartItems.length === 0) {
@@ -67,14 +77,16 @@ const CheckoutScreen: React.FC<Props> = ({ currentUser, onBack, onOrderSuccess }
     if (!currentUser) return;
 
     const paymentLabel =
-      paymentMethod === 'COD' ? 'Tiền mặt khi nhận hàng (COD)' : 'Chuyển khoản ngân hàng';
+      paymentMethod === 'COD'
+        ? 'Tiền mặt khi nhận hàng (COD)'
+        : 'Chuyển khoản ngân hàng';
     const orderId = await createOrder(
       currentUser.id,
       customerName.trim(),
       phone.trim(),
       address.trim(),
       paymentLabel,
-      cartItems
+      cartItems,
     );
 
     if (!orderId) {
@@ -84,14 +96,20 @@ const CheckoutScreen: React.FC<Props> = ({ currentUser, onBack, onOrderSuccess }
 
     Alert.alert(
       'Đặt hàng thành công! 🎉',
-      `Đơn hàng #${orderId} đã được tạo thành công.\nTrạng thái: ⏳ Chờ Admin xác nhận\nTổng tiền: ${formatPrice(totalAmount)}`,
-      [{ text: 'Xem đơn hàng', onPress: onOrderSuccess }]
+      `Đơn hàng #${orderId} đã được tạo thành công.\nTrạng thái: ⏳ Chờ Admin xác nhận\nTổng tiền: ${formatPrice(
+        totalAmount,
+      )}`,
+      [{ text: 'Xem đơn hàng', onPress: onOrderSuccess }],
     );
   };
 
   return (
     <View style={ui.screen}>
-      <NavBar title="ĐẶT HÀNG & THANH TOÁN" onBack={onBack} backText="◀ Giỏ hàng" />
+      <NavBar
+        title="ĐẶT HÀNG & THANH TOÁN"
+        onBack={onBack}
+        backText="◀ Giỏ hàng"
+      />
 
       <ScrollView contentContainerStyle={ui.scrollPad}>
         <View style={ui.card}>
@@ -137,7 +155,7 @@ const CheckoutScreen: React.FC<Props> = ({ currentUser, onBack, onOrderSuccess }
 
         <View style={ui.card}>
           <Text style={styles.cardTitle}>💳 Phương Thức Thanh Toán</Text>
-          {PAYMENT_METHODS.map((pm) => {
+          {PAYMENT_METHODS.map(pm => {
             const active = paymentMethod === pm.key;
             return (
               <TouchableOpacity
@@ -157,11 +175,16 @@ const CheckoutScreen: React.FC<Props> = ({ currentUser, onBack, onOrderSuccess }
         </View>
 
         <View style={ui.card}>
-          <Text style={styles.cardTitle}>🛍️ Tóm Tắt Đơn Hàng ({cartItems.length} sản phẩm)</Text>
+          <Text style={styles.cardTitle}>
+            🛍️ Tóm Tắt Đơn Hàng ({cartItems.length} sản phẩm)
+          </Text>
 
-          {cartItems.map((item) => (
+          {cartItems.map(item => (
             <View key={item.id} style={[ui.row, styles.sumItem]}>
-              <Image source={{ uri: getImgUri(item.img, item.name) }} style={styles.sumImg} />
+              <Image
+                source={{ uri: getImgUri(item.img, item.name) }}
+                style={styles.sumImg}
+              />
               <View style={styles.sumInfo}>
                 <Text style={styles.sumName} numberOfLines={1}>
                   {item.name}
@@ -170,7 +193,9 @@ const CheckoutScreen: React.FC<Props> = ({ currentUser, onBack, onOrderSuccess }
                   SL: {item.quantity} x {formatPrice(item.price)}
                 </Text>
               </View>
-              <Text style={styles.sumSub}>{formatPrice(item.price * item.quantity)}</Text>
+              <Text style={styles.sumSub}>
+                {formatPrice(item.price * item.quantity)}
+              </Text>
             </View>
           ))}
 
@@ -190,7 +215,11 @@ const CheckoutScreen: React.FC<Props> = ({ currentUser, onBack, onOrderSuccess }
           </View>
         </View>
 
-        <TouchableOpacity style={ui.btnPrimary} onPress={handlePlaceOrder} activeOpacity={0.85}>
+        <TouchableOpacity
+          style={ui.btnPrimary}
+          onPress={handlePlaceOrder}
+          activeOpacity={0.85}
+        >
           <Text style={ui.btnPrimaryText}>XÁC NHẬN ĐẶT HÀNG NGAY</Text>
         </TouchableOpacity>
       </ScrollView>
@@ -201,17 +230,42 @@ const CheckoutScreen: React.FC<Props> = ({ currentUser, onBack, onOrderSuccess }
 export default CheckoutScreen;
 
 const styles = StyleSheet.create({
-  cardTitle: { fontSize: 15, fontWeight: 'bold', color: '#0F172A', marginBottom: 8 },
+  cardTitle: {
+    fontSize: 15,
+    fontWeight: 'bold',
+    color: '#0F172A',
+    marginBottom: 8,
+  },
   freeText: { color: '#10B981' },
-  payOption: { flexDirection: 'row', alignItems: 'center', borderWidth: 1.5, borderColor: '#CBD5E1', borderRadius: 10, padding: 12, marginTop: 8, backgroundColor: '#F8FAFC' },
+  payOption: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderWidth: 1.5,
+    borderColor: '#CBD5E1',
+    borderRadius: 10,
+    padding: 12,
+    marginTop: 8,
+    backgroundColor: '#F8FAFC',
+  },
   payOptionActive: { borderColor: '#0284C7', backgroundColor: '#EFF6FF' },
   payIcon: { fontSize: 24, marginRight: 10 },
   payName: { fontSize: 14, fontWeight: 'bold', color: '#0F172A' },
   payDesc: { fontSize: 12, color: '#64748B', marginTop: 2 },
-  radio: { width: 18, height: 18, borderRadius: 9, borderWidth: 2, borderColor: '#94A3B8' },
+  radio: {
+    width: 18,
+    height: 18,
+    borderRadius: 9,
+    borderWidth: 2,
+    borderColor: '#94A3B8',
+  },
   radioActive: { borderColor: '#0284C7', backgroundColor: '#0284C7' },
   sumItem: { marginBottom: 10 },
-  sumImg: { width: 44, height: 44, borderRadius: 6, backgroundColor: '#F1F5F9' },
+  sumImg: {
+    width: 44,
+    height: 44,
+    borderRadius: 6,
+    backgroundColor: '#F1F5F9',
+  },
   sumInfo: { flex: 1, marginLeft: 10 },
   sumName: { fontSize: 13, fontWeight: '600', color: '#0F172A' },
   sumQty: { fontSize: 12, color: '#64748B', marginTop: 2 },

@@ -1,5 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, View, FlatList, TextInput, TouchableOpacity, Alert, Modal, Image } from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  FlatList,
+  TextInput,
+  TouchableOpacity,
+  Alert,
+  Modal,
+  Image,
+} from 'react-native';
 import {
   fetchCategories,
   addCategory,
@@ -45,13 +55,18 @@ const CategoryManager: React.FC<Props> = ({ onBack, onRefreshProducts }) => {
       : await addCategory(trimmed);
 
     if (!ok) {
-      Alert.alert('Lỗi', editingCategory ? 'Cập nhật thất bại!' : 'Thêm thất bại!');
+      Alert.alert(
+        'Lỗi',
+        editingCategory ? 'Cập nhật thất bại!' : 'Thêm thất bại!',
+      );
       return;
     }
 
     Alert.alert(
       'Thành công',
-      editingCategory ? 'Cập nhật loại sản phẩm thành công!' : 'Thêm loại sản phẩm mới thành công!'
+      editingCategory
+        ? 'Cập nhật loại sản phẩm thành công!'
+        : 'Thêm loại sản phẩm mới thành công!',
     );
     setEditingCategory(null);
     setCategoryName('');
@@ -74,7 +89,7 @@ const CategoryManager: React.FC<Props> = ({ onBack, onRefreshProducts }) => {
             onRefreshProducts?.();
           },
         },
-      ]
+      ],
     );
   };
 
@@ -100,7 +115,8 @@ const CategoryManager: React.FC<Props> = ({ onBack, onRefreshProducts }) => {
     const ok = await addProduct({
       name: prodName.trim(),
       price: priceNum,
-      img: prodImg.trim() || getDefaultImg(`${prodName} ${targetCategory.name}`),
+      img:
+        prodImg.trim() || getDefaultImg(`${prodName} ${targetCategory.name}`),
       categoryId: targetCategory.id,
     });
 
@@ -109,7 +125,10 @@ const CategoryManager: React.FC<Props> = ({ onBack, onRefreshProducts }) => {
       return;
     }
 
-    Alert.alert('Thành công', `Đã thêm "${prodName.trim()}" vào loại "${targetCategory.name}"!`);
+    Alert.alert(
+      'Thành công',
+      `Đã thêm "${prodName.trim()}" vào loại "${targetCategory.name}"!`,
+    );
     setModalVisible(false);
     loadCategories();
     onRefreshProducts?.();
@@ -124,13 +143,17 @@ const CategoryManager: React.FC<Props> = ({ onBack, onRefreshProducts }) => {
         <View style={ui.flex1}>
           <Text style={styles.catName}>{item.name}</Text>
           <Text style={styles.catCount}>
-            Số sản phẩm: <Text style={styles.catCountBold}>{item.productCount ?? 0}</Text>
+            Số sản phẩm:{' '}
+            <Text style={styles.catCountBold}>{item.productCount ?? 0}</Text>
           </Text>
         </View>
       </View>
 
       <View style={styles.catActions}>
-        <TouchableOpacity style={styles.addProdBtn} onPress={() => openAddProductModal(item)}>
+        <TouchableOpacity
+          style={styles.addProdBtn}
+          onPress={() => openAddProductModal(item)}
+        >
           <Text style={styles.addProdBtnText}>➕ Thêm SP</Text>
         </TouchableOpacity>
         <TouchableOpacity
@@ -142,7 +165,10 @@ const CategoryManager: React.FC<Props> = ({ onBack, onRefreshProducts }) => {
         >
           <Text style={ui.editBtnText}>✏️ Sửa</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={ui.deleteBtn} onPress={() => handleDelete(item)}>
+        <TouchableOpacity
+          style={ui.deleteBtn}
+          onPress={() => handleDelete(item)}
+        >
           <Text style={ui.deleteBtnText}>🗑️ Xóa</Text>
         </TouchableOpacity>
       </View>
@@ -155,7 +181,9 @@ const CategoryManager: React.FC<Props> = ({ onBack, onRefreshProducts }) => {
 
       <View style={[ui.card, styles.formWrap]}>
         <Text style={styles.formTitle}>
-          {editingCategory ? `✏️ Đang sửa: ${editingCategory.name}` : '➕ Thêm loại sản phẩm mới'}
+          {editingCategory
+            ? `✏️ Đang sửa: ${editingCategory.name}`
+            : '➕ Thêm loại sản phẩm mới'}
         </Text>
         <View style={styles.inputRow}>
           <TextInput
@@ -166,10 +194,15 @@ const CategoryManager: React.FC<Props> = ({ onBack, onRefreshProducts }) => {
             onChangeText={setCategoryName}
           />
           <TouchableOpacity
-            style={[styles.saveBtn, editingCategory ? ui.btnUpdate : ui.btnCreate]}
+            style={[
+              styles.saveBtn,
+              editingCategory ? ui.btnUpdate : ui.btnCreate,
+            ]}
             onPress={handleSaveCategory}
           >
-            <Text style={styles.saveBtnText}>{editingCategory ? 'Lưu' : 'Thêm'}</Text>
+            <Text style={styles.saveBtnText}>
+              {editingCategory ? 'Lưu' : 'Thêm'}
+            </Text>
           </TouchableOpacity>
         </View>
         {editingCategory && (
@@ -187,10 +220,12 @@ const CategoryManager: React.FC<Props> = ({ onBack, onRefreshProducts }) => {
 
       <FlatList
         data={categories}
-        keyExtractor={(item) => item.id.toString()}
+        keyExtractor={item => item.id.toString()}
         renderItem={renderItem}
         contentContainerStyle={ui.listPad}
-        ListEmptyComponent={<Text style={ui.emptyPlain}>Chưa có loại sản phẩm nào</Text>}
+        ListEmptyComponent={
+          <Text style={ui.emptyPlain}>Chưa có loại sản phẩm nào</Text>
+        }
       />
 
       <Modal visible={modalVisible} transparent animationType="slide">
@@ -218,7 +253,10 @@ const CategoryManager: React.FC<Props> = ({ onBack, onRefreshProducts }) => {
               onChangeText={setProdPrice}
             />
 
-            <TouchableOpacity style={styles.pickImgBtn} onPress={() => pickImageUri(setProdImg)}>
+            <TouchableOpacity
+              style={styles.pickImgBtn}
+              onPress={() => pickImageUri(setProdImg)}
+            >
               <Text style={styles.pickImgText}>
                 {prodImg ? '📷 Chọn lại ảnh từ máy' : '📷 Chọn ảnh từ thư viện'}
               </Text>
@@ -237,10 +275,16 @@ const CategoryManager: React.FC<Props> = ({ onBack, onRefreshProducts }) => {
             )}
 
             <View style={ui.modalActions}>
-              <TouchableOpacity style={ui.modalCancelBtn} onPress={() => setModalVisible(false)}>
+              <TouchableOpacity
+                style={ui.modalCancelBtn}
+                onPress={() => setModalVisible(false)}
+              >
                 <Text style={ui.modalCancelText}>Hủy</Text>
               </TouchableOpacity>
-              <TouchableOpacity style={ui.modalSubmitBtn} onPress={handleAddProductForCategory}>
+              <TouchableOpacity
+                style={ui.modalSubmitBtn}
+                onPress={handleAddProductForCategory}
+              >
                 <Text style={ui.modalSubmitText}>Lưu Sản Phẩm</Text>
               </TouchableOpacity>
             </View>
@@ -255,27 +299,98 @@ export default CategoryManager;
 
 const styles = StyleSheet.create({
   formWrap: { margin: 12 },
-  formTitle: { fontSize: 14, fontWeight: 'bold', color: '#334155', marginBottom: 10 },
+  formTitle: {
+    fontSize: 14,
+    fontWeight: 'bold',
+    color: '#334155',
+    marginBottom: 10,
+  },
   inputRow: { flexDirection: 'row', gap: 8 },
-  saveBtn: { paddingHorizontal: 18, borderRadius: 8, justifyContent: 'center', alignItems: 'center' },
+  saveBtn: {
+    paddingHorizontal: 18,
+    borderRadius: 8,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   saveBtnText: { color: '#FFFFFF', fontWeight: 'bold', fontSize: 14 },
   cancelEditBtn: { marginTop: 8, alignSelf: 'flex-start' },
   cancelEditText: { color: '#EF4444', fontSize: 12, fontWeight: '600' },
-  catCard: { backgroundColor: '#FFFFFF', borderRadius: 12, padding: 14, marginBottom: 10, borderWidth: 1, borderColor: '#E2E8F0', elevation: 1 },
+  catCard: {
+    backgroundColor: '#FFFFFF',
+    borderRadius: 12,
+    padding: 14,
+    marginBottom: 10,
+    borderWidth: 1,
+    borderColor: '#E2E8F0',
+    elevation: 1,
+  },
   catInfoRow: { flexDirection: 'row', alignItems: 'center' },
-  catIconBox: { width: 38, height: 38, borderRadius: 10, backgroundColor: '#EFF6FF', justifyContent: 'center', alignItems: 'center', marginRight: 10 },
+  catIconBox: {
+    width: 38,
+    height: 38,
+    borderRadius: 10,
+    backgroundColor: '#EFF6FF',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 10,
+  },
   catIcon: { fontSize: 18 },
   catName: { fontSize: 16, fontWeight: 'bold', color: '#0F172A' },
   catCount: { fontSize: 13, color: '#64748B', marginTop: 2 },
   catCountBold: { fontWeight: 'bold', color: '#0284C7' },
-  catActions: { flexDirection: 'row', marginTop: 12, paddingTop: 10, borderTopWidth: 1, borderTopColor: '#F1F5F9', gap: 8 },
-  addProdBtn: { flex: 1, backgroundColor: '#E0F2FE', borderWidth: 1, borderColor: '#BAE6FD', paddingVertical: 6, borderRadius: 6, alignItems: 'center' },
+  catActions: {
+    flexDirection: 'row',
+    marginTop: 12,
+    paddingTop: 10,
+    borderTopWidth: 1,
+    borderTopColor: '#F1F5F9',
+    gap: 8,
+  },
+  addProdBtn: {
+    flex: 1,
+    backgroundColor: '#E0F2FE',
+    borderWidth: 1,
+    borderColor: '#BAE6FD',
+    paddingVertical: 6,
+    borderRadius: 6,
+    alignItems: 'center',
+  },
   addProdBtnText: { color: '#0369A1', fontWeight: 'bold', fontSize: 12 },
-  catBadgeRow: { flexDirection: 'row', alignItems: 'center', marginBottom: 12, backgroundColor: '#F1F5F9', padding: 8, borderRadius: 8, gap: 8 },
+  catBadgeRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 12,
+    backgroundColor: '#F1F5F9',
+    padding: 8,
+    borderRadius: 8,
+    gap: 8,
+  },
   catBadgeLabel: { fontSize: 13, color: '#64748B' },
-  catBadgeText: { backgroundColor: '#E0F2FE', color: '#0369A1', fontWeight: 'bold', fontSize: 13, paddingVertical: 3, paddingHorizontal: 8, borderRadius: 4 },
+  catBadgeText: {
+    backgroundColor: '#E0F2FE',
+    color: '#0369A1',
+    fontWeight: 'bold',
+    fontSize: 13,
+    paddingVertical: 3,
+    paddingHorizontal: 8,
+    borderRadius: 4,
+  },
   modalInputGap: { marginBottom: 10 },
-  pickImgBtn: { backgroundColor: '#F1F5F9', borderWidth: 1, borderColor: '#CBD5E1', paddingVertical: 10, borderRadius: 8, alignItems: 'center', marginBottom: 12 },
+  pickImgBtn: {
+    backgroundColor: '#F1F5F9',
+    borderWidth: 1,
+    borderColor: '#CBD5E1',
+    paddingVertical: 10,
+    borderRadius: 8,
+    alignItems: 'center',
+    marginBottom: 12,
+  },
   pickImgText: { fontSize: 13, fontWeight: '600', color: '#475569' },
-  previewImage: { width: 90, height: 90, borderRadius: 8, alignSelf: 'center', marginBottom: 12 },
+  previewImage: {
+    width: 90,
+    height: 90,
+    borderRadius: 8,
+    alignSelf: 'center',
+    marginBottom: 12,
+  },
 });

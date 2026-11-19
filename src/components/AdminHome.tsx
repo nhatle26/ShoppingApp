@@ -1,11 +1,24 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, ScrollView, StatusBar } from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  ScrollView,
+  StatusBar,
+} from 'react-native';
 import Header from './Header';
 import UserManager from './UserManager';
 import CategoryManager from './CategoryManager';
 import ProductManager from './ProductManager';
 import OrderManager from './OrderManager';
-import { fetchUsers, fetchCategories, fetchProducts, getAllOrders, User } from './database';
+import {
+  fetchUsers,
+  fetchCategories,
+  fetchProducts,
+  getAllOrders,
+  User,
+} from './database';
 import { ui } from './uiStyles';
 
 interface Props {
@@ -14,11 +27,25 @@ interface Props {
   onNavigateToUserHome?: () => void;
 }
 
-type AdminSubScreen = 'dashboard' | 'users' | 'categories' | 'products' | 'orders';
+type AdminSubScreen =
+  | 'dashboard'
+  | 'users'
+  | 'categories'
+  | 'products'
+  | 'orders';
 
-const AdminHome: React.FC<Props> = ({ currentUser, onLogout, onNavigateToUserHome }) => {
+const AdminHome: React.FC<Props> = ({
+  currentUser,
+  onLogout,
+  onNavigateToUserHome,
+}) => {
   const [screen, setScreen] = useState<AdminSubScreen>('dashboard');
-  const [stats, setStats] = useState({ users: 0, categories: 0, products: 0, orders: 0 });
+  const [stats, setStats] = useState({
+    users: 0,
+    categories: 0,
+    products: 0,
+    orders: 0,
+  });
 
   const loadStats = async () => {
     try {
@@ -44,7 +71,12 @@ const AdminHome: React.FC<Props> = ({ currentUser, onLogout, onNavigateToUserHom
   }, [screen]);
 
   if (screen === 'users') {
-    return <UserManager currentUser={currentUser} onBack={() => setScreen('dashboard')} />;
+    return (
+      <UserManager
+        currentUser={currentUser}
+        onBack={() => setScreen('dashboard')}
+      />
+    );
   }
   if (screen === 'categories') {
     return (
@@ -63,7 +95,12 @@ const AdminHome: React.FC<Props> = ({ currentUser, onLogout, onNavigateToUserHom
 
   const statCards = [
     { icon: '👥', value: stats.users, label: 'Người dùng', border: '#0284C7' },
-    { icon: '📂', value: stats.categories, label: 'Loại sản phẩm', border: '#F59E0B' },
+    {
+      icon: '📂',
+      value: stats.categories,
+      label: 'Loại sản phẩm',
+      border: '#F59E0B',
+    },
     { icon: '🛍️', value: stats.products, label: 'Sản phẩm', border: '#10B981' },
     { icon: '📦', value: stats.orders, label: 'Đơn hàng', border: '#8B5CF6' },
   ];
@@ -108,7 +145,11 @@ const AdminHome: React.FC<Props> = ({ currentUser, onLogout, onNavigateToUserHom
   return (
     <View style={ui.screen}>
       <StatusBar barStyle="light-content" />
-      <Header currentUser={currentUser} onLogout={onLogout} title="BẢNG QUẢN TRỊ ADMIN" />
+      <Header
+        currentUser={currentUser}
+        onLogout={onLogout}
+        title="BẢNG QUẢN TRỊ ADMIN"
+      />
 
       <ScrollView contentContainerStyle={styles.scrollContent}>
         <View style={styles.banner}>
@@ -119,8 +160,11 @@ const AdminHome: React.FC<Props> = ({ currentUser, onLogout, onNavigateToUserHom
         </View>
 
         <View style={styles.statsGrid}>
-          {statCards.map((card) => (
-            <View key={card.label} style={[styles.statCard, { borderLeftColor: card.border }]}>
+          {statCards.map(card => (
+            <View
+              key={card.label}
+              style={[styles.statCard, { borderLeftColor: card.border }]}
+            >
               <Text style={styles.statIcon}>{card.icon}</Text>
               <View>
                 <Text style={styles.statNum}>{card.value}</Text>
@@ -132,7 +176,7 @@ const AdminHome: React.FC<Props> = ({ currentUser, onLogout, onNavigateToUserHom
 
         <Text style={styles.sectionTitle}>CHỨC NĂNG QUẢN LÝ</Text>
 
-        {menuItems.map((item) => (
+        {menuItems.map(item => (
           <TouchableOpacity
             key={item.key}
             style={[ui.card, ui.row]}
@@ -151,7 +195,11 @@ const AdminHome: React.FC<Props> = ({ currentUser, onLogout, onNavigateToUserHom
         ))}
 
         {onNavigateToUserHome && (
-          <TouchableOpacity style={styles.shortcut} onPress={onNavigateToUserHome} activeOpacity={0.8}>
+          <TouchableOpacity
+            style={styles.shortcut}
+            onPress={onNavigateToUserHome}
+            activeOpacity={0.8}
+          >
             <Text style={styles.shortcutText}>
               🛍️ Chuyển sang Giao diện Cửa hàng của User ➔
             </Text>
@@ -166,20 +214,73 @@ export default AdminHome;
 
 const styles = StyleSheet.create({
   scrollContent: { padding: 16, paddingBottom: 60 },
-  banner: { backgroundColor: '#0F172A', borderRadius: 14, padding: 16, marginBottom: 14 },
-  bannerTitle: { fontSize: 17, fontWeight: 'bold', color: '#38BDF8', marginBottom: 4 },
+  banner: {
+    backgroundColor: '#0F172A',
+    borderRadius: 14,
+    padding: 16,
+    marginBottom: 14,
+  },
+  bannerTitle: {
+    fontSize: 17,
+    fontWeight: 'bold',
+    color: '#38BDF8',
+    marginBottom: 4,
+  },
   bannerSub: { fontSize: 13, color: '#94A3B8', lineHeight: 18 },
-  statsGrid: { flexDirection: 'row', flexWrap: 'wrap', gap: 10, marginBottom: 18 },
-  statCard: { flex: 1, minWidth: '45%', backgroundColor: '#FFFFFF', borderRadius: 12, padding: 14, flexDirection: 'row', alignItems: 'center', gap: 10, borderLeftWidth: 4, borderWidth: 1, borderColor: '#E2E8F0', elevation: 1 },
+  statsGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 10,
+    marginBottom: 18,
+  },
+  statCard: {
+    flex: 1,
+    minWidth: '45%',
+    backgroundColor: '#FFFFFF',
+    borderRadius: 12,
+    padding: 14,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
+    borderLeftWidth: 4,
+    borderWidth: 1,
+    borderColor: '#E2E8F0',
+    elevation: 1,
+  },
   statIcon: { fontSize: 26 },
   statNum: { fontSize: 18, fontWeight: 'bold', color: '#0F172A' },
   statLabel: { fontSize: 12, color: '#64748B' },
-  sectionTitle: { fontSize: 14, fontWeight: 'bold', color: '#334155', marginBottom: 10 },
-  iconCircle: { width: 46, height: 46, borderRadius: 23, justifyContent: 'center', alignItems: 'center', marginRight: 12 },
+  sectionTitle: {
+    fontSize: 14,
+    fontWeight: 'bold',
+    color: '#334155',
+    marginBottom: 10,
+  },
+  iconCircle: {
+    width: 46,
+    height: 46,
+    borderRadius: 23,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 12,
+  },
   cardEmoji: { fontSize: 22 },
-  cardTitle: { fontSize: 15, fontWeight: 'bold', color: '#0F172A', marginBottom: 3 },
+  cardTitle: {
+    fontSize: 15,
+    fontWeight: 'bold',
+    color: '#0F172A',
+    marginBottom: 3,
+  },
   cardDesc: { fontSize: 12, color: '#64748B', lineHeight: 16 },
   arrow: { fontSize: 18, color: '#94A3B8', marginLeft: 8 },
-  shortcut: { backgroundColor: '#E0F2FE', borderWidth: 1.5, borderColor: '#BAE6FD', borderRadius: 12, paddingVertical: 14, alignItems: 'center', marginTop: 8 },
+  shortcut: {
+    backgroundColor: '#E0F2FE',
+    borderWidth: 1.5,
+    borderColor: '#BAE6FD',
+    borderRadius: 12,
+    paddingVertical: 14,
+    alignItems: 'center',
+    marginTop: 8,
+  },
   shortcutText: { color: '#0369A1', fontWeight: 'bold', fontSize: 14 },
 });
