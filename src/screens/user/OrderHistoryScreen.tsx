@@ -1,8 +1,8 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { StyleSheet, Text, View, FlatList } from 'react-native';
-import { getOrdersByUserId, Order, User } from './database';
-import { ui } from './uiStyles';
-import { NavBar, EmptyState, OrderItemList, formatPrice } from './shared';
+import { getOrdersByUserId, Order, User } from '../../database/database';
+import { ui } from '../../styles/uiStyles';
+import { NavBar, EmptyState, OrderItemList, formatPrice } from '../../components/shared';
 
 interface Props {
   currentUser: User | null;

@@ -18,15 +18,15 @@ import {
   deleteProduct,
   Product,
   Category,
-} from './database';
-import { ui } from './uiStyles';
+} from '../../database/database';
+import { ui } from '../../styles/uiStyles';
 import {
   NavBar,
   getImgUri,
   getDefaultImg,
   formatPrice,
   pickImageUri,
-} from './shared';
+} from '../../components/shared';
 
 interface Props {
   onBack?: () => void;

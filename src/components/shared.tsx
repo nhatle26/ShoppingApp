@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, TextInput, Image } from 'react-native';
 import { launchImageLibrary } from 'react-native-image-picker';
-import { OrderItem } from './database';
-import { ui } from './uiStyles';
+import { OrderItem } from '../database/database';
+import { ui } from '../styles/uiStyles';
 
 export const DEFAULT_IMG =
   'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=500';

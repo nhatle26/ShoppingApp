@@ -11,9 +11,9 @@ import {
   ScrollView,
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { getUserByCredentials, User } from './database';
-import { ui } from './uiStyles';
-import { PasswordField } from './shared';
+import { getUserByCredentials, User } from '../../database/database';
+import { ui } from '../../styles/uiStyles';
+import { PasswordField } from '../../components/shared';
 
 interface Props {
   onSwitchToSignup?: () => void;

@@ -11,13 +11,13 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { initDatabase, User } from './src/components/database';
+import { initDatabase, User } from './src/database/database';
 import Header from './src/components/Header';
-import LoginSqlite from './src/components/LoginSqlite';
-import SignupSqlite from './src/components/SignupSqlite';
-import AdminHome from './src/components/AdminHome';
-import UserHomeScreen, { UserSubView } from './src/components/UserHomeScreen';
-import { ui } from './src/components/uiStyles';
+import LoginSqlite from './src/screens/auth/LoginSqlite';
+import SignupSqlite from './src/screens/auth/SignupSqlite';
+import AdminHome from './src/screens/admin/AdminHome';
+import UserHomeScreen, { UserSubView } from './src/screens/user/UserHomeScreen';
+import { ui } from './src/styles/uiStyles';
 
 LogBox.ignoreAllLogs(true);
 

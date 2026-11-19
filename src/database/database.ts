@@ -139,7 +139,7 @@ const initialProducts = [
   },
 ];
 
-export const initDatabase = async (onSuccess?: () => void) => {
+export const initDatabase = (onSuccess?: () => void) => {
   try {
     const database = getDb();
 
@@ -233,35 +233,35 @@ export const initDatabase = async (onSuccess?: () => void) => {
   }
 };
 
-export const fetchCategories = async (): Promise<Category[]> =>
+export const fetchCategories = (): Category[] =>
   queryRows<Category>(
     `SELECT c.id, c.name, COUNT(p.id) as productCount
      FROM categories c LEFT JOIN products p ON c.id = p.categoryId
      GROUP BY c.id ORDER BY c.id ASC;`,
   );
 
-export const addCategory = async (name: string): Promise<boolean> =>
+export const addCategory = (name: string): boolean =>
   execSql('INSERT INTO categories (name) VALUES (?);', [name.trim()]);
 
-export const updateCategory = async (category: Category): Promise<boolean> =>
+export const updateCategory = (category: Category): boolean =>
   execSql('UPDATE categories SET name = ? WHERE id = ?;', [
     category.name.trim(),
     category.id,
   ]);
 
-export const deleteCategory = async (id: number): Promise<boolean> =>
+export const deleteCategory = (id: number): boolean =>
   execSql('DELETE FROM products WHERE categoryId = ?;', [id]) &&
   execSql('DELETE FROM categories WHERE id = ?;', [id]);
 
-export const fetchProducts = async (): Promise<Product[]> =>
+export const fetchProducts = (): Product[] =>
   queryRows<Product>(
     `SELECT p.*, c.name as categoryName FROM products p
      LEFT JOIN categories c ON p.categoryId = c.id ORDER BY p.id DESC;`,
   );
 
-export const fetchProductsByCategory = async (
+export const fetchProductsByCategory = (
   categoryId: number,
-): Promise<Product[]> =>
+): Product[] =>
   queryRows<Product>(
     `SELECT p.*, c.name as categoryName FROM products p
      LEFT JOIN categories c ON p.categoryId = c.id
@@ -269,24 +269,24 @@ export const fetchProductsByCategory = async (
     [categoryId],
   );
 
-export const addProduct = async (product: {
+export const addProduct = (product: {
   name: string;
   price: number;
   img: string;
   categoryId: number;
-}): Promise<boolean> =>
+}): boolean =>
   execSql(
     'INSERT INTO products (name, price, img, categoryId) VALUES (?, ?, ?, ?);',
     [product.name.trim(), product.price, product.img || '', product.categoryId],
   );
 
-export const updateProduct = async (product: {
+export const updateProduct = (product: {
   id: number;
   name: string;
   price: number;
   img: string;
   categoryId: number;
-}): Promise<boolean> =>
+}): boolean =>
   execSql(
     'UPDATE products SET name = ?, price = ?, img = ?, categoryId = ? WHERE id = ?;',
     [
@@ -298,13 +298,13 @@ export const updateProduct = async (product: {
     ],
   );
 
-export const deleteProduct = async (id: number): Promise<boolean> =>
+export const deleteProduct = (id: number): boolean =>
   execSql('DELETE FROM products WHERE id = ?;', [id]) &&
   execSql('DELETE FROM cart WHERE productId = ?;', [id]);
 
-export const searchProductsByNameOrCategory = async (
+export const searchProductsByNameOrCategory = (
   keyword: string,
-): Promise<Product[]> =>
+): Product[] =>
   queryRows<Product>(
     `SELECT p.*, c.name as categoryName FROM products p
      LEFT JOIN categories c ON p.categoryId = c.id
@@ -312,19 +312,19 @@ export const searchProductsByNameOrCategory = async (
     [`%${keyword}%`, `%${keyword}%`],
   );
 
-export const fetchUsers = async (): Promise<User[]> =>
+export const fetchUsers = (): User[] =>
   queryRows<User>(
     'SELECT id, username, role, fullname, phone, address FROM users ORDER BY id ASC;',
   );
 
-export const addUser = async (
+export const addUser = (
   username: string,
   password: string,
   role: string = 'user',
   fullname: string = '',
   phone: string = '',
   address: string = '',
-): Promise<boolean> =>
+): boolean =>
   execSql(
     'INSERT INTO users (username, password, role, fullname, phone, address) VALUES (?, ?, ?, ?, ?, ?);',
     [
@@ -337,7 +337,7 @@ export const addUser = async (
     ],
   );
 
-export const updateUser = async (user: User): Promise<boolean> =>
+export const updateUser = (user: User): boolean =>
   execSql(
     'UPDATE users SET username = ?, role = ?, fullname = ?, phone = ?, address = ? WHERE id = ?;',
     [
@@ -350,19 +350,19 @@ export const updateUser = async (user: User): Promise<boolean> =>
     ],
   );
 
-export const updateUserRole = async (
+export const updateUserRole = (
   userId: number,
   newRole: string,
-): Promise<boolean> =>
+): boolean =>
   execSql('UPDATE users SET role = ? WHERE id = ?;', [newRole, userId]);
 
-export const updateUserProfile = async (
+export const updateUserProfile = (
   userId: number,
   fullname: string,
   phone: string,
   address: string,
   password?: string,
-): Promise<boolean> => {
+): boolean => {
   if (password && password.trim().length > 0) {
     return execSql(
       'UPDATE users SET fullname = ?, phone = ?, address = ?, password = ? WHERE id = ?;',
@@ -375,30 +375,30 @@ export const updateUserProfile = async (
   );
 };
 
-export const deleteUser = async (id: number): Promise<boolean> =>
+export const deleteUser = (id: number): boolean =>
   execSql('DELETE FROM users WHERE id = ?;', [id]) &&
   execSql('DELETE FROM cart WHERE userId = ?;', [id]);
 
-export const getUserByCredentials = async (
+export const getUserByCredentials = (
   username: string,
   password: string,
-): Promise<User | null> =>
+): User | null =>
   queryRows<User>(
     'SELECT id, username, role, fullname, phone, address FROM users WHERE username = ? AND password = ?;',
     [username.trim(), password],
   )[0] || null;
 
-export const getUserById = async (id: number): Promise<User | null> =>
+export const getUserById = (id: number): User | null =>
   queryRows<User>(
     'SELECT id, username, role, fullname, phone, address FROM users WHERE id = ?;',
     [id],
   )[0] || null;
 
-export const addToCart = async (
+export const addToCart = (
   userId: number,
   productId: number,
   quantity: number = 1,
-): Promise<boolean> => {
+): boolean => {
   const existing = queryRows<{ id: number; quantity: number }>(
     'SELECT id, quantity FROM cart WHERE userId = ? AND productId = ?;',
     [userId, productId],
@@ -416,7 +416,7 @@ export const addToCart = async (
   );
 };
 
-export const getCartItems = async (userId: number): Promise<CartItem[]> =>
+export const getCartItems = (userId: number): CartItem[] =>
   queryRows<CartItem>(
     `SELECT c.id, c.userId, c.productId, c.quantity, p.name, p.price, p.img, p.categoryId
      FROM cart c JOIN products p ON c.productId = p.id
@@ -424,28 +424,28 @@ export const getCartItems = async (userId: number): Promise<CartItem[]> =>
     [userId],
   );
 
-export const updateCartQuantity = async (
+export const updateCartQuantity = (
   cartId: number,
   quantity: number,
-): Promise<boolean> =>
+): boolean =>
   quantity <= 0
     ? execSql('DELETE FROM cart WHERE id = ?;', [cartId])
     : execSql('UPDATE cart SET quantity = ? WHERE id = ?;', [quantity, cartId]);
 
-export const removeFromCart = async (cartId: number): Promise<boolean> =>
+export const removeFromCart = (cartId: number): boolean =>
   execSql('DELETE FROM cart WHERE id = ?;', [cartId]);
 
-export const clearCart = async (userId: number): Promise<boolean> =>
+export const clearCart = (userId: number): boolean =>
   execSql('DELETE FROM cart WHERE userId = ?;', [userId]);
 
-export const createOrder = async (
+export const createOrder = (
   userId: number,
   customerName: string,
   phone: string,
   address: string,
   paymentMethod: string,
   items: CartItem[],
-): Promise<number | null> => {
+): number | null => {
   try {
     const database = getDb();
     const totalAmount = items.reduce(
@@ -504,7 +504,7 @@ const attachOrderItems = (orders: Order[]): Order[] =>
     ),
   }));
 
-export const getOrdersByUserId = async (userId: number): Promise<Order[]> =>
+export const getOrdersByUserId = (userId: number): Order[] =>
   attachOrderItems(
     queryRows<Order>(
       'SELECT * FROM orders WHERE userId = ? ORDER BY id DESC;',
@@ -512,11 +512,11 @@ export const getOrdersByUserId = async (userId: number): Promise<Order[]> =>
     ),
   );
 
-export const getAllOrders = async (): Promise<Order[]> =>
+export const getAllOrders = (): Order[] =>
   attachOrderItems(queryRows<Order>('SELECT * FROM orders ORDER BY id DESC;'));
 
-export const updateOrderStatus = async (
+export const updateOrderStatus = (
   orderId: number,
   status: string,
-): Promise<boolean> =>
+): boolean =>
   execSql('UPDATE orders SET status = ? WHERE id = ?;', [status, orderId]);

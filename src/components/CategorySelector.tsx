@@ -6,7 +6,7 @@ import {
   ScrollView,
   TouchableOpacity,
 } from 'react-native';
-import { Category } from './database';
+import { Category } from '../database/database';
 
 interface CategorySelectorProps {
   categories: Category[];

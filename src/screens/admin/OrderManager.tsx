@@ -8,9 +8,9 @@ import {
   Alert,
   ScrollView,
 } from 'react-native';
-import { getAllOrders, updateOrderStatus, Order } from './database';
-import { ui } from './uiStyles';
-import { NavBar, EmptyState, OrderItemList, formatPrice } from './shared';
+import { getAllOrders, updateOrderStatus, Order } from '../../database/database';
+import { ui } from '../../styles/uiStyles';
+import { NavBar, EmptyState, OrderItemList, formatPrice } from '../../components/shared';
 
 interface Props {
   onBack: () => void;

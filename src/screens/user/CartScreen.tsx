@@ -14,9 +14,9 @@ import {
   removeFromCart,
   CartItem,
   User,
-} from './database';
-import { ui } from './uiStyles';
-import { NavBar, EmptyState, getImgUri, formatPrice } from './shared';
+} from '../../database/database';
+import { ui } from '../../styles/uiStyles';
+import { NavBar, EmptyState, getImgUri, formatPrice } from '../../components/shared';
 
 interface Props {
   currentUser: User | null;

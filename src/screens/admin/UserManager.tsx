@@ -15,9 +15,9 @@ import {
   deleteUser,
   addUser,
   User,
-} from './database';
-import { ui } from './uiStyles';
-import { NavBar } from './shared';
+} from '../../database/database';
+import { ui } from '../../styles/uiStyles';
+import { NavBar } from '../../components/shared';
 
 interface Props {
   currentUser: User | null;

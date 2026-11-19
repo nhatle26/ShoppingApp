@@ -11,8 +11,8 @@ import {
   ScrollView,
   KeyboardTypeOptions,
 } from 'react-native';
-import { addUser } from './database';
-import { ui } from './uiStyles';
+import { addUser } from '../../database/database';
+import { ui } from '../../styles/uiStyles';
 
 interface Props {
   onSwitchToLogin?: () => void;

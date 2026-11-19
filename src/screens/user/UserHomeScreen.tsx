@@ -11,13 +11,13 @@ import {
   StatusBar,
   ScrollView,
 } from 'react-native';
-import Header from './Header';
+import Header from '../../components/Header';
 import CartScreen from './CartScreen';
 import CheckoutScreen from './CheckoutScreen';
 import OrderHistoryScreen from './OrderHistoryScreen';
 import ProfileScreen from './ProfileScreen';
 import ProductDetailScreen from './ProductDetailScreen';
-import CategorySelector from './CategorySelector';
+import CategorySelector from '../../components/CategorySelector';
 import {
   fetchProducts,
   fetchCategories,
@@ -26,8 +26,8 @@ import {
   Product,
   Category,
   User,
-} from './database';
-import { EmptyState, getImgUri, formatPrice } from './shared';
+} from '../../database/database';
+import { EmptyState, getImgUri, formatPrice } from '../../components/shared';
 
 interface Props {
   currentUser: User | null;

@@ -7,7 +7,7 @@ import {
   ScrollView,
   StatusBar,
 } from 'react-native';
-import Header from './Header';
+import Header from '../../components/Header';
 import UserManager from './UserManager';
 import CategoryManager from './CategoryManager';
 import ProductManager from './ProductManager';
@@ -18,8 +18,8 @@ import {
   fetchProducts,
   getAllOrders,
   User,
-} from './database';
-import { ui } from './uiStyles';
+} from '../../database/database';
+import { ui } from '../../styles/uiStyles';
 
 interface Props {
   currentUser: User | null;

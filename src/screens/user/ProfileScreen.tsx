@@ -11,9 +11,9 @@ import {
   Platform,
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { updateUserProfile, getUserById, User } from './database';
-import { ui } from './uiStyles';
-import { NavBar, PasswordField } from './shared';
+import { updateUserProfile, getUserById, User } from '../../database/database';
+import { ui } from '../../styles/uiStyles';
+import { NavBar, PasswordField } from '../../components/shared';
 
 interface Props {
   currentUser: User | null;

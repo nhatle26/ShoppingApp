@@ -17,9 +17,9 @@ import {
   deleteCategory,
   addProduct,
   Category,
-} from './database';
-import { ui } from './uiStyles';
-import { NavBar, getDefaultImg, pickImageUri } from './shared';
+} from '../../database/database';
+import { ui } from '../../styles/uiStyles';
+import { NavBar, getDefaultImg, pickImageUri } from '../../components/shared';
 
 interface Props {
   onBack?: () => void;

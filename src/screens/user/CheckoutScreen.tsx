@@ -9,9 +9,9 @@ import {
   Alert,
   Image,
 } from 'react-native';
-import { getCartItems, createOrder, CartItem, User } from './database';
-import { ui } from './uiStyles';
-import { NavBar, getImgUri, formatPrice } from './shared';
+import { getCartItems, createOrder, CartItem, User } from '../../database/database';
+import { ui } from '../../styles/uiStyles';
+import { NavBar, getImgUri, formatPrice } from '../../components/shared';
 
 interface Props {
   currentUser: User | null;

@@ -8,9 +8,9 @@ import {
   TouchableOpacity,
   Alert,
 } from 'react-native';
-import { Product, User, addToCart } from './database';
-import { ui } from './uiStyles';
-import { NavBar, getImgUri, formatPrice } from './shared';
+import { Product, User, addToCart } from '../../database/database';
+import { ui } from '../../styles/uiStyles';
+import { NavBar, getImgUri, formatPrice } from '../../components/shared';
 
 interface ProductDetailProps {
   product: Product;

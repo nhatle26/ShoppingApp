@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, Alert } from 'react-native';
-import { User } from './database';
-import { ui } from './uiStyles';
+import { User } from '../database/database';
+import { ui } from '../styles/uiStyles';
 
 interface HeaderProps {
   currentUser: User | null;
